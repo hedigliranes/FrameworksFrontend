@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Button, Modal, Form, Col } from 'react-bootstrap';
 import PropTypes from "prop-types";
 
@@ -7,8 +7,30 @@ export default function SignUp(props) {
     const [show, setShow] = useState(props);
     const [nome, setNome] = useState(null);
     const [info, setInfo] = useState(null);
+    const [img, setImg] = useState(null);
+
     const {cadastro} = props;
 
+
+ useEffect(() => {
+    var xhr = new XMLHttpRequest();
+    var json_obj;
+    xhr.open("GET", "https://dog.ceo/api/breeds/image/random", true);
+    xhr.onload = function (e) {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          json_obj = JSON.parse(xhr.responseText);
+          setImg(json_obj.message);
+        } else {
+          console.error(xhr.statusText);
+        }
+      }
+    }.bind(this);
+    xhr.onerror = function (e) {
+      console.error(xhr.statusText);
+    };
+    xhr.send(null);
+ }, [])
   
     const handleClose = () => setShow(false); 
 
@@ -21,7 +43,7 @@ export default function SignUp(props) {
     }
 
     const handleCadastrou = () =>{
-         cadastro(nome, info);
+         cadastro(nome, info, img);
          setShow(false);
 
         } 

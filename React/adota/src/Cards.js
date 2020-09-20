@@ -14,37 +14,14 @@ export default class Cards extends React.Component {
     });
   };
 
-  componentDidMount() {
-    var xhr = new XMLHttpRequest();
-    var json_obj;
-    xhr.open("GET", "https://dog.ceo/api/breeds/image/random", true);
-    xhr.onload = function (e) {
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          json_obj = JSON.parse(xhr.responseText);
-          this.setState({ url: json_obj.message });
-
-        } else {
-          console.error(xhr.statusText);
-        }
-      }
-    }.bind(this);
-    xhr.onerror = function (e) {
-      console.error(xhr.statusText);
-    };
-    xhr.send(null);
-  }
-
   sendData = (e) => {
     this.props.parentCallback(e);
   }
-
-
     render() {
       return (
         <div>
           <Card style={{width: '18rem'}}>
-          <Card.Img variant="top" src={this.state.url} />
+          <Card.Img variant="top" src={this.props.img} />
           <Card.Body>
             <Card.Title>{this.props.nome}</Card.Title>
             <Card.Text>

@@ -10,17 +10,15 @@ export default class App extends React.Component{
   constructor(props) {
     super(props)
     this.state = {
+      show: false,
+      load: false,
       current: 0,
       dogs: [
-        {"nome": "Bob", "info": "Cachorro amigavel !"},
-        {"nome": "Billy", "info": "Me adota pf"}
+        {"nome": "Bob", "info": "Cachorro amigavel !", "img": null},
+        {"nome": "Billy", "info": "Me adota pf", "img": null}
       ],
     }
   }
-
-  state = {
-    show: false
-  };
   showModal = e => {
     this.setState({
       show: !this.state.show
@@ -34,27 +32,41 @@ export default class App extends React.Component{
   }
 
 
-  cadastro = (nome, info) => {
+  cadastro = (nome, info, img) => {
     const aux = this.state.dogs;
-    console.log(nome.value, " " , info.value);
-    aux.push({"nome": nome.value, "info": info.value});
+    aux.push({"nome": nome.value, "info": info.value, "img": img});
     this.setState({dogs: aux});
   }
 
-  render(){
+  componentWillMount() {
+    let aux = this.state.dogs;
 
-    const cards = (
-        this.state.dogs.map((element, index) =>
-          <Col md="4" key={index}>
-            <Cards
-            id = {index}
-            nome = {element.nome}
-            info = {element.info}
-            parentCallback = {this.callbackFunction}
-            />
-          </Col>
-        )
-    )
+    aux.map((element) =>{
+        var xhr = new XMLHttpRequest();
+        var json_obj;
+        xhr.open("GET", "https://dog.ceo/api/breeds/image/random", true);
+        xhr.onload = function (e) {
+          if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+              json_obj = JSON.parse(xhr.responseText);
+              element.img = json_obj.message;
+              this.setState({dogs: aux});
+            } else {
+              console.error(xhr.statusText);
+            }
+          }
+        }.bind(this);
+        xhr.onerror = function (e) {
+          console.error(xhr.statusText);
+        };
+        xhr.send(null);
+    })     
+    this.setState({
+      load: !this.state.load
+    });
+  }
+
+  render(){
   return (
     <div className="App">
 
@@ -82,7 +94,17 @@ export default class App extends React.Component{
 
       <div>
         <Row>
-        {cards}
+        {this.state.load == true ? 
+                this.state.dogs.map((element, index) =>
+                <Col md="4" key={index}>
+                  <Cards
+                  id = {index}
+                  nome = {element.nome}
+                  info = {element.info}
+                  parentCallback = {this.callbackFunction}
+                  img = {element.img}
+                  />
+                </Col>) : null}
         </Row>
       </div>
 
