@@ -1,58 +1,112 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+      <b-navbar variant="faded" type="light">
+        <b-navbar-brand href="#" class="App"><img
+          src="../assets/logo.png"
+          width="250"
+          height="150"
+          class="d-inline-block logo"
+          alt="React Vue"
+        /></b-navbar-brand>
+      </b-navbar>
+            <header class="App-header">
+          <p >
+          Plataforma dedica a fazer os doguinhos mais felizes !!!!
+          <br/>
+            <b-button variant="success" v-on:click="showModal">Cadastre seu doginho</b-button>
+        </p>
+      </header>
+      <b-container>
+      <b-row cols = 3>
+        <b-col v-for="(dog, index) of dogs" :key="index">
+        <Cards :dog = "dog" :index = "index" @adotar="callbackFunction"/>
+        </b-col>
+      </b-row>
+    </b-container>
+    <h1 v-if="show === true">
+        <Cadastro @cadastrar="cadastrar"/>  
+    </h1>
   </div>
 </template>
 
 <script>
+
+import axios from 'axios';
+import Cards from './Cards';
+import Cadastro from './Cadastro';
+
 export default {
   name: 'HelloWorld',
-  props: {
-    msg: String
+  components: { Cards, Cadastro },
+  data: function() {
+    return {
+      current: 0,
+      dogs: [
+        {"nome": "Bob", "info": "Cachorro amigavel !", "img": null},
+        {"nome": "Billy", "info": "Me adota pf", "img": null}
+      ],
+      show: false
+    } 
+  },
+
+  methods: {
+      callbackFunction(childData){
+          console.log(this.dogs);
+          const aux = this.dogs;
+          aux.splice(childData, 1);
+          this.dogs = aux;
+      },
+    showModal: function() {
+      this.show = !this.show;
+    },
+    cadastrar(nome, info, img) {
+      console.log(nome)
+      const aux = this.dogs;
+      aux.push({"nome": nome, "info": info, "img": img});
+      this.dogs = aux;
+    }
+  },
+
+mounted(){
+
+   this.dogs.forEach((item) => {
+    axios.get(`https://dog.ceo/api/breeds/image/random`)
+    .then(response => {
+      item.img = response.data.message;
+    })
+    .catch(e => {
+      this.errors.push(e)
+    })
+
+    });
+  
   }
 }
 </script>
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
+.logo {
+  margin-top: 1% !important; 
+  margin-right: 5% !important;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+
+.App{
+  text-align: center;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
+
+.navbar {
+  display: block !important;
 }
-a {
-  color: #42b983;
+
+.App-header {
+  background-image: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url("../assets/banner.jpg");
+  background-size: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: black;
 }
 </style>
