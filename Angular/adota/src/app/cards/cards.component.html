@@ -1,0 +1,12 @@
+<div class="card" style="width: 18rem;">
+    <img [src]="url" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">{{nome}}</h5>
+      <p class="card-text">{{desc}}</p>
+      <a class="btn btn-primary" (click)="showModal()">Ver informações</a>
+    </div>
+
+    <div *ngIf="show === true">
+      <app-info [nome] = "nome" [index] = "index" [desc]="desc" (adotar)="remover($event)"></app-info>
+    </div>
+</div>

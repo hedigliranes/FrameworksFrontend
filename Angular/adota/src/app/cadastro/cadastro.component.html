@@ -1,0 +1,30 @@
+<button type="button" id="modalCadastro" class="btn btn-primary" data-toggle="modal" data-target="#modalC">
+    {{modal}}
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="modalC" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Cadastre o cachorro</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlInput1">Nome</label>
+          <input type="input" class="form-control" #nome id="exampleFormControlInput1" placeholder="Insira o nome">
+        </div>
+        <br/>
+        <div class="form-group">
+          <label for="exampleFormControlTextarea1">Descrição</label>
+          <textarea class="form-control" id="exampleFormControlTextarea1" #desc rows="5" placeholder="Fale sobre ele"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="cadastro(nome.value, desc.value)">Cadastrar</button>
+        </div>
+      </div>
+    </div>
+  </div>

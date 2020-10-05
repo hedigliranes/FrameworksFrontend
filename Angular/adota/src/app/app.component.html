@@ -1,0 +1,54 @@
+<style>
+  .logo {
+    margin-top: 1% !important; 
+    margin-right: 5% !important;
+  }
+  
+  .App{
+    text-align: center;
+  }
+  
+  .navbar {
+    display: block !important;
+    text-align: center;
+    background-color: beige;
+  }
+  
+  .App-header {
+    background-image: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url("../assets/banner.jpg");
+    background-size: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: black;
+  }
+</style>
+
+<nav class="navbar navbar-expand-md navbar-dark fixed-top">
+  <a class="navbar-brand" href="#"><img class = "logo" src="../assets/logo.png" alt="logo" width="250" height="150">  </a>
+  <button class="navbar-toggler hidden-sm-up" type="button" aria-controls="navbarsDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+</nav>
+
+<header class="App-header">
+  Plataforma dedica a fazer os doguinhos mais felizes !!!!
+  <br/>
+  <button type="submit" class="btn btn-success" (click)="showModal()">Cadastrar</button>
+</header>
+
+<div class="row">
+  <div *ngFor="let dog of dogs; let i = index" class="col-sm-4">
+    <app-cards [nome]="dog.nome" [desc]="dog.info" [url]="dog.img" [index] = "i" (delete)="removerDog($event)"></app-cards>
+  </div>
+
+  <div *ngIf="show === true">
+    <app-cadastro (cadastrar)="addDog($event)"></app-cadastro>
+  </div>
+</div>
+
+
+
