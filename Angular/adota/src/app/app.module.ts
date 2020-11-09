@@ -8,18 +8,22 @@ import { CardsComponent } from './cards/cards.component';
 import { HttpClientModule } from '@angular/common/http';
 import { InfoComponent } from './info/info.component';
 import { CadastroComponent } from './cadastro/cadastro.component'
+import { FormsModule } from '@angular/forms'
+
 
 @NgModule({
   declarations: [
     AppComponent,
     CardsComponent,
     InfoComponent,
-    CadastroComponent  ],
+    CadastroComponent
+    ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

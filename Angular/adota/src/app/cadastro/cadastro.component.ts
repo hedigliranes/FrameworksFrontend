@@ -1,5 +1,10 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {ApiService } from '../api.service';
+
+class Error {
+  nome: string
+  desc: string
+}
 
 @Component({
   selector: 'app-cadastro',
@@ -7,6 +12,7 @@ import {ApiService } from '../api.service';
   styleUrls: ['./cadastro.component.scss']
 })
 export class CadastroComponent implements OnInit {
+  @Input() erro: Error = new Error;
 
   url: string;
   @Output() cadastrar: EventEmitter<any> = new EventEmitter<any>();
