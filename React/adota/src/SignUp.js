@@ -2,14 +2,37 @@ import React, {useState, useEffect} from 'react';
 import { Button, Modal, Form, Col } from 'react-bootstrap';
 import PropTypes from "prop-types";
 
+export function minLengthValidation(minLength, value) {
+  if (value.trim().length < minLength) {
+    return `Este campo requer pelo menos ${minLength} caracteres`
+  }
+  return null
+}
+
+export function requiredValidation(value) {
+  if (value.trim() === '') {
+    return 'Este campo é obrigatório'
+  }
+  return null
+}
+
+const validate = {
+  info: (value) => minLengthValidation(3, value),
+  nome: requiredValidation,
+}
+
 export default function SignUp(props) {
 
     const [show, setShow] = useState(props);
-    const [nome, setNome] = useState(null);
-    const [info, setInfo] = useState(null);
-    const [img, setImg] = useState(null);
+    const [nome, setNome] = useState('');
+    const [info, setInfo] = useState('');
+    const [img, setImg] = useState('');
+    const [erros, setErros] = useState(2);
+    const [nameError, setNameError] = useState("");
+    const [nameInfo, setNameInfo] = useState("");
 
     const {cadastro} = props;
+    
 
 
  useEffect(() => {
@@ -42,11 +65,51 @@ export default function SignUp(props) {
         setInfo({value: event.target.value})
     }
 
-    const handleCadastrou = () =>{
+      const handleCadastrou = (event) =>{
+
          cadastro(nome, info, img);
          setShow(false);
 
         } 
+      
+        function onBlur(event) {
+          const value  = event.target.value
+          const name  = event.target.name
+          const error = validate[name] ? validate[name](value) : null
+          
+          if(erros > 0){
+
+              if(error != null){
+                if(name == "nome"){
+                  setNameError(error)
+                }else if(name == "info"){
+                  setNameInfo(error)
+                }
+              }
+
+              if(error != null && erros < 2){
+                  setErros(erros + 1);
+              }else if(error === null){
+                setErros(erros - 1);
+                if(name == "nome"){
+                  setNameError("")
+                }else if(name == "info"){
+                  setNameInfo("")
+                }
+              }
+          }else if(erros === 0){
+              if(error != null){
+                setErros(erros + 1);
+                if(name == "nome"){
+                  setNameError(error)
+                }else if(name == "info"){
+                  setNameInfo(error)
+                }
+            }
+          }
+          console.log(error)
+          console.log(erros)
+        }
         
     return (
       <> 
@@ -56,10 +119,15 @@ export default function SignUp(props) {
           </Modal.Header>
           <Modal.Body>
           <Form>
-            <Form.Control onChange={handleChange} placeholder="Nome" />
+            <Form.Control name = "nome" onChange={handleChange} onBlur={onBlur} placeholder="Nome" />
+            <br/>
+            <div className="error" style={{color: "red"}}>{nameError}</div>
             <br/>
             <Form.Group controlId="exampleForm.ControlTextarea1">
-            <Form.Control onChange={handleChangeInfo} as="textarea" rows="5"  placeholder="Fale sobre ele"/>
+            <Form.Control name = "info" onChange={handleChangeInfo} onBlur={onBlur} as="textarea" rows="5"  placeholder="Fale sobre ele"/>
+            <br/>
+            <div className="error" style={{color: "red"}}>{nameInfo}</div>
+            <br/>
             </Form.Group>
           </Form>    
           </Modal.Body>
@@ -67,7 +135,7 @@ export default function SignUp(props) {
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
-            <Button variant="primary" onClick={handleCadastrou}>
+            <Button disabled = {erros > 0} variant="primary" onClick={handleCadastrou}>
               Cadastrar
             </Button>
           </Modal.Footer>
