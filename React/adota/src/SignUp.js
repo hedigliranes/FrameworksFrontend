@@ -28,8 +28,8 @@ export default function SignUp(props) {
     const [info, setInfo] = useState('');
     const [img, setImg] = useState('');
     const [erros, setErros] = useState(2);
-    const [nameError, setNameError] = useState("");
-    const [nameInfo, setNameInfo] = useState("");
+    const [nameError, setNameError] = useState(" ");
+    const [nameInfo, setNameInfo] = useState(" ");
 
     const {cadastro} = props;
     
@@ -90,10 +90,11 @@ export default function SignUp(props) {
               if(error != null && erros < 2){
                   setErros(erros + 1);
               }else if(error === null){
-                setErros(erros - 1);
-                if(name == "nome"){
+                if(name == "nome" && nameError != ""){
+                  setErros(erros - 1);
                   setNameError("")
-                }else if(name == "info"){
+                }else if(name == "info" && nameInfo != ""){
+                  setErros(erros - 1);
                   setNameInfo("")
                 }
               }
