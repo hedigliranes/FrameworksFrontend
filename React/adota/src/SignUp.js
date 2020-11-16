@@ -27,13 +27,11 @@ export default function SignUp(props) {
     const [nome, setNome] = useState('');
     const [info, setInfo] = useState('');
     const [img, setImg] = useState('');
-    const [erros, setErros] = useState(2);
     const [nameError, setNameError] = useState(" ");
     const [nameInfo, setNameInfo] = useState(" ");
+    const [valid, setValid] = useState("invalido");
 
     const {cadastro} = props;
-    
-
 
  useEffect(() => {
     var xhr = new XMLHttpRequest();
@@ -77,8 +75,6 @@ export default function SignUp(props) {
           const name  = event.target.name
           const error = validate[name] ? validate[name](value) : null
           
-          if(erros > 0){
-
               if(error != null){
                 if(name == "nome"){
                   setNameError(error)
@@ -87,29 +83,22 @@ export default function SignUp(props) {
                 }
               }
 
-              if(error != null && erros < 2){
-                  setErros(erros + 1);
-              }else if(error === null){
-                if(name == "nome" && nameError != ""){
-                  setErros(erros - 1);
-                  setNameError("")
-                }else if(name == "info" && nameInfo != ""){
-                  setErros(erros - 1);
-                  setNameInfo("")
-                }
-              }
-          }else if(erros === 0){
               if(error != null){
-                setErros(erros + 1);
-                if(name == "nome"){
-                  setNameError(error)
-                }else if(name == "info"){
-                  setNameInfo(error)
+
+                setValid("invalido")
+  
+                }else if(error === null){
+                  if(name === "nome" && nameError !== ""){
+                    setNameError("");
+                  }else if(name === "info" && nameInfo !== ""){
+                    setNameInfo("");
+                  }
                 }
-            }
-          }
-          console.log(error)
-          console.log(erros)
+  
+                if(nameError === "" && nameInfo === ""){
+                  setValid("valido")
+                }
+            console.log(valid)
         }
         
     return (
@@ -120,12 +109,12 @@ export default function SignUp(props) {
           </Modal.Header>
           <Modal.Body>
           <Form>
-            <Form.Control name = "nome" onChange={handleChange} onBlur={onBlur} placeholder="Nome" />
+            <Form.Control name = "nome" onChange={handleChangeInfo, onBlur } onBlur={onBlur} placeholder="Nome" />
             <br/>
             <div className="error" style={{color: "red"}}>{nameError}</div>
             <br/>
             <Form.Group controlId="exampleForm.ControlTextarea1">
-            <Form.Control name = "info" onChange={handleChangeInfo} onBlur={onBlur} as="textarea" rows="5"  placeholder="Fale sobre ele"/>
+            <Form.Control name = "info" onChange={handleChangeInfo, onBlur} onBlur={onBlur} as="textarea" rows="5"  placeholder="Fale sobre ele"/>
             <br/>
             <div className="error" style={{color: "red"}}>{nameInfo}</div>
             <br/>
@@ -136,7 +125,7 @@ export default function SignUp(props) {
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
-            <Button disabled = {erros > 0} variant="primary" onClick={handleCadastrou}>
+            <Button disabled = {valid != "valido"} variant="primary" onClick={handleCadastrou}>
               Cadastrar
             </Button>
           </Modal.Footer>

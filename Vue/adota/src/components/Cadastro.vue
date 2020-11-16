@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-modal :ok-disabled="erros > 0" @ok="cadastrar"
+        <b-modal :ok-disabled="valid != 'valido'" @ok="cadastrar"
          ok-title = "Cadastrar" ref="my-modal" id="modal-1" title="Cadastrar o Doguinho">
             <b-form-group id="input-group-2" label="Nome:" label-for="input-2">
              <b-form-input
@@ -65,7 +65,8 @@ export default {
       img: "",
       erros: 2,
       nameError: " ",
-      nameInfo: " "
+      nameInfo: " ",
+      valid: "invalido"
     } 
   },
 
@@ -77,10 +78,8 @@ export default {
         this.$emit("cadastrar", this.nome, this.desc, this.img);
       },
       checkField(name) {
-        let count = this.erros;
         const value = this._data[name]
         const error = validate[name] ? validate[name](value) : null        
-        if(count > 0){
 
               if(error != null){
                 if(name == "nome"){
@@ -90,32 +89,23 @@ export default {
                 }
               }
 
-              if(error != null && this.erros < 2){
-                count++;
+        if(error != null){
+
+              this.valid = "invalido";
+
               }else if(error == null){
                 if(name == "nome" && this.nameError != ""){
-                  count--;
                   this.nameError = "";
                 }else if(name == "desc" && this.nameInfo != ""){
-                  count--;
                   this.nameInfo = "";
                 }
               }
-        }else if(count == 0){
 
-              if(error != null){
-                count++;
-                 if(name == "nome"){
-                  this.nameError = error;
-                }else if(name == "desc"){
-                  this.nameInfo = error;
-                }
-            }
-          }
-          console.log(error)
-          this.erros = count;
-          console.log(this.erros)
-    }
+              if(this.nameError == "" && this.nameInfo == ""){
+                this.valid = "valido";
+              }
+          console.log(this.valid)
+      }
     },
   mounted(){
       this.showModal();

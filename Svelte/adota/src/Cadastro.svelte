@@ -12,16 +12,17 @@
           </button>
           <div class="form-group">
             <label for="exampleFormControlInput1">Nome</label>
-            <input bind:value={nome} type="input" class="form-control" id="exampleFormControlInput1" placeholder="Insira o nome">
+            <input bind:value={nome} type="input" on:blur={checkField('nome',nome)} class="form-control" id="exampleFormControlInput1" placeholder="Insira o nome">
+            <div class="error" style="color:red">{ nameError }</div>
           </div>
-          <br/>
           <div class="form-group">
             <label for="exampleFormControlTextarea1">Descrição</label>
-            <textarea bind:value={desc} class="form-control" id="exampleFormControlTextarea1" rows="5" placeholder="Fale sobre ele"></textarea>
+            <textarea on:blur={checkField('desc',desc)} bind:value={desc} class="form-control" id="exampleFormControlTextarea1" rows="5" placeholder="Fale sobre ele"></textarea>
           </div>
+          <div class="error" style="color:red">{ nameInfo }</div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" on:click={cadastro} data-dismiss="modal">Cadastrar</button>
+          <button type="button" class="btn btn-primary" on:click={cadastro} disabled = {valid != "valido"} data-dismiss="modal">Cadastrar</button>
         </div>
       </div>
     </div>
@@ -32,8 +33,33 @@
 import { onMount } from 'svelte';
 import { createEventDispatcher } from 'svelte'
 
+const validate = {
+  desc: (value) => minLengthValidation(3, value),
+  nome: requiredValidation
+}
+
+export function minLengthValidation(minLength, value) {
+  if (!value || value.trim().length < minLength) {
+    return `Este campo requer pelo menos ${minLength} caracteres`
+  }
+  return null
+}
+
+export function requiredValidation(value) {
+  if (!value || value.trim() === '') {
+    return 'Este campo é obrigatório'
+  }
+  return null
+}
+
 export let nome = ""
 export let desc = ""
+
+let nameError = " ";
+let nameInfo = " ";
+
+let valid = "invalido"
+
 let photos;
 let img;
 
@@ -54,5 +80,35 @@ function cadastro(){
     console.log(nome)
     dispatcher('cadastrar', {nome: nome, desc: desc, img: img})
 }
+
+function checkField(name, valueCamp) {
+        const value = valueCamp;
+        const error = validate[name] ? validate[name](value) : null        
+              if(error != null){
+                if(name == "nome"){
+                  nameError = error;
+                }else if(name == "desc"){
+                  nameInfo = error;
+                }
+              }
+
+              if(error != null){
+
+                valid = "invalido";
+
+              }else if(error == null){
+                if(name == "nome" && nameError != ""){
+                  nameError = "";
+                }else if(name == "desc" && nameInfo != ""){
+                  nameInfo = "";
+                }
+              }
+
+              if(nameError == "" && nameInfo == ""){
+                valid = "valido";
+              }
+          console.log(valid)
+
+    }
 
 </script>
