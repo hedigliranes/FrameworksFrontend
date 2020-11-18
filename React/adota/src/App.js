@@ -31,6 +31,13 @@ export default class App extends React.Component{
     this.setState({dogs: aux});
   }
 
+  edicao = (nome, info, id) => {
+    let aux = this.state.dogs;
+    aux[id].nome = nome;
+    aux[id].info = info;
+    this.setState({dogs: aux});  
+  }
+
 
   cadastro = (nome, info, img) => {
     const aux = this.state.dogs;
@@ -102,6 +109,7 @@ export default class App extends React.Component{
                   nome = {element.nome}
                   info = {element.info}
                   parentCallback = {this.callbackFunction}
+                  edicao = {this.edicao}
                   img = {element.img}
                   />
                 </Col>) : null}

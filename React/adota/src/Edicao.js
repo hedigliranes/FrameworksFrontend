@@ -21,54 +21,34 @@ const validate = {
   nome: requiredValidation,
 }
 
-export default function SignUp(props) {
+export default function Edicao(props) {
 
     const [show, setShow] = useState(props);
-    const [nome, setNome] = useState('');
-    const [info, setInfo] = useState('');
+    const [nome, setNome] = useState(props.nome);
+    const [info, setInfo] = useState(props.info);
+    const [id, setID] = useState(props.id);
     const [img, setImg] = useState('');
     const [nameError, setNameError] = useState(" ");
     const [nameInfo, setNameInfo] = useState(" ");
     const [valid, setValid] = useState("invalido");
 
-    const {cadastro} = props;
-
- useEffect(() => {
-    var xhr = new XMLHttpRequest();
-    var json_obj;
-    xhr.open("GET", "https://dog.ceo/api/breeds/image/random", true);
-    xhr.onload = function (e) {
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          json_obj = JSON.parse(xhr.responseText);
-          setImg(json_obj.message);
-        } else {
-          console.error(xhr.statusText);
-        }
-      }
-    }.bind(this);
-    xhr.onerror = function (e) {
-      console.error(xhr.statusText);
-    };
-    xhr.send(null);
- }, [])
+    const {editar} = props;
   
     const handleClose = () => setShow(false); 
 
     function handleChange(event) {
-        setNome({value: event.target.value})
+        setNome(event.target.value)
         onBlur(event);
     }
 
     function handleChangeInfo(event) {
-        setInfo({value: event.target.value})
+        setInfo(event.target.value)
         onBlur(event);
-
     }
 
       const handleCadastrou = (event) =>{
 
-         cadastro(nome, info, img);
+         editar(nome, info, id);
          setShow(false);
 
         } 
@@ -101,23 +81,22 @@ export default function SignUp(props) {
                 if(nameError === "" && nameInfo === ""){
                   setValid("valido")
                 }
-            console.log(valid)
         }
         
     return (
       <> 
         <Modal show={show.show} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Cadastro do Doguinho</Modal.Title>
+            <Modal.Title>Edição do Doguinho</Modal.Title>
           </Modal.Header>
           <Modal.Body>
           <Form>
-            <Form.Control name = "nome" onChange={handleChange} onBlur={onBlur} placeholder="Nome" />
+            <Form.Control name = "nome" onChange={handleChange} value={nome} onBlur={onBlur} placeholder={nome} />
             <br/>
             <div className="error" style={{color: "red"}}>{nameError}</div>
             <br/>
             <Form.Group controlId="exampleForm.ControlTextarea1">
-            <Form.Control name = "info" onChange={handleChangeInfo} onBlur={onBlur} as="textarea" rows="5"  placeholder="Fale sobre ele"/>
+            <Form.Control name = "info" onChange={handleChangeInfo} value={info} onBlur={onBlur} as="textarea" rows="5"  placeholder={info}/>
             <br/>
             <div className="error" style={{color: "red"}}>{nameInfo}</div>
             <br/>
@@ -129,7 +108,7 @@ export default function SignUp(props) {
               Close
             </Button>
             <Button disabled = {valid != "valido"} variant="primary" onClick={handleCadastrou}>
-              Cadastrar
+              Editar
             </Button>
           </Modal.Footer>
         </Modal>
@@ -137,7 +116,10 @@ export default function SignUp(props) {
     );
   }
 
-  SignUp.propTypes = {
+  Edicao.propTypes = {
     show: PropTypes.bool.isRequired,
-    cadastro: PropTypes.func.isRequired,
+    nome: PropTypes.string.isRequired,
+    info: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    editar: PropTypes.func.isRequired,
   };
