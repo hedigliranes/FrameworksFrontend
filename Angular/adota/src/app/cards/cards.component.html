@@ -4,9 +4,14 @@
       <h5 class="card-title">{{nome}}</h5>
       <p class="card-text">{{desc}}</p>
       <a class="btn btn-primary" (click)="showModal()">Ver informações</a>
+      <a class="btn btn-danger" style="margin-left: 15px;" (click)="editar()">Editar</a>
     </div>
 
     <div *ngIf="show === true">
       <app-info [nome] = "nome" [index] = "index" [desc]="desc" (adotar)="remover($event)"></app-info>
+    </div>
+
+    <div *ngIf="showEditar === true">
+      <app-edicao [nome] = "nome" [index] = "index" [desc]="desc" (editar)="edicao($event)"></app-edicao>
     </div>
 </div>

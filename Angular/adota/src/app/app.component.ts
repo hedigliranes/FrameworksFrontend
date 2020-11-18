@@ -41,4 +41,12 @@ export class AppComponent {
       aux.push({"nome": date.nome, "info": date.desc, "img": date.url});
       this.dogs = aux;
   }
+
+  editarDog(date: any){
+    console.log(date)
+    const aux = this.dogs;
+    aux[date.index].nome = date.nome;
+    aux[date.index].info = date.desc;
+    this.dogs = aux;
+}
 }
