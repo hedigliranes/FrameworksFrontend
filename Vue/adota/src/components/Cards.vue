@@ -14,27 +14,33 @@
               {{dog.info}}
             </b-card-text>
             <b-button href="#" variant="primary" v-on:click="showModal">Ver informações</b-button>
+            <b-button href="#" style="margin-left:15px" variant="danger" v-on:click="showModalEdicao">Editar</b-button>
           </b-card>
         </b-col>
       </b-row>
     <h1 v-if="show === true">
         <Details :detalhes = "dog" @clique="adotando"/>  
     </h1>
+    <h1 v-if="showEdicao === true">
+        <Edicao :dog = "dog" :index = "index" @editar="editar"/>  
+    </h1>
     </b-container>
 </template>
 
 <script>
 import Details from './Details';
+import Edicao from './Edicao';
 
 export default {
   name: 'Cards',
   props: ['dog', 'index'],
-  components: { Details },
+  components: { Details, Edicao },
 
   data: function() {
     return {
       current: 0,
-      show: false
+      show: false,
+      showEdicao: false
     } 
   },
   
@@ -42,9 +48,15 @@ export default {
     showModal: function() {
       this.show = !this.show;
     },
+    showModalEdicao: function() {
+      this.showEdicao = !this.showEdicao;
+    },
     adotando: function() {
 
       this.$emit("adotar", this.index);
+    },
+    editar: function(nome, desc, index) {
+      this.$emit("editar", nome, desc, index);
     }
   }
 }

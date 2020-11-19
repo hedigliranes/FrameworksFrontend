@@ -19,7 +19,7 @@
       <b-container>
       <b-row cols = 3>
         <b-col v-for="(dog, index) of dogs" :key="index">
-        <Cards :dog = "dog" :index = "index" @adotar="callbackFunction"/>
+        <Cards :dog = "dog" :index = "index" @adotar="callbackFunction" @editar="editar"/>
         </b-col>
       </b-row>
     </b-container>
@@ -63,6 +63,13 @@ export default {
       console.log(nome)
       const aux = this.dogs;
       aux.push({"nome": nome, "info": info, "img": img});
+      this.dogs = aux;
+    },
+    editar(nome, info, id) {
+      console.log(nome)
+      const aux = this.dogs;
+      aux[id].nome = nome;
+      aux[id].info = info;
       this.dogs = aux;
     }
   },
