@@ -37,6 +37,13 @@
           dogs = aux;
 	}
 
+	function editar(event){
+          const aux = dogs;
+		  aux[event.detail.id].nome = event.detail.nome; 
+		  aux[event.detail.id].info = event.detail.desc; 
+          dogs = aux;
+	}
+
 </script>
 
 <main>
@@ -55,7 +62,7 @@
 	<div class="row row-cols-3">
 		{#each dogs as dog, index}
 				<div class="col">
-					<Card nome={dog.nome} index={index} desc = {dog.info} img ={dog.img} on:adocao2={removerDog}/>
+					<Card nome={dog.nome} index={index} desc = {dog.info} img ={dog.img} on:adocao2={removerDog} on:editar={editar}/>
 				</div>
 		{/each}
 	</div>

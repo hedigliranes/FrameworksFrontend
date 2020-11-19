@@ -4,6 +4,8 @@
       <h5 class="card-title">{nome}</h5>
       <p class="card-text">{desc}</p>
       <a class="btn btn-primary" style="color:white !important" on:click={showModal}>Ver informações</a>
+      <a class="btn btn-danger" style="color:white !important; margin-left: 15px" on:click={showModalEdicao}>Editar</a>
+
     </div>
   </div>
 
@@ -11,9 +13,15 @@
     <Info nome = {nome} desc = {desc} index = {index} on:adocao1={remover}></Info>
   {/if}
 
+  
+  {#if showEdicao === true}
+    <Edicao nome = {nome} desc = {desc} index = {index} on:editar={editar}></Edicao>
+  {/if}
+
 
 <script>
 import Info from './Info.svelte'
+import Edicao from './Edicao.svelte'
 import { createEventDispatcher } from 'svelte'
 
 export let nome
@@ -21,10 +29,20 @@ export let desc
 export let img
 export let index
 let show = false;
+let showEdicao = false;
 const dispatcher = createEventDispatcher()
         
 function showModal(){
       show = !show;
+ }
+
+ function showModalEdicao(){
+     showEdicao = !showEdicao;
+ }
+
+ function editar(event){
+    console.log(event)
+    dispatcher('editar', event.detail)
  }
 
  function remover(event){
