@@ -28,9 +28,9 @@ export default function Edicao(props) {
     const [info, setInfo] = useState(props.info);
     const [id, setID] = useState(props.id);
     const [img, setImg] = useState('');
-    const [nameError, setNameError] = useState(" ");
-    const [nameInfo, setNameInfo] = useState(" ");
-    const [valid, setValid] = useState("invalido");
+    const [nameError, setNameError] = useState("");
+    const [nameInfo, setNameInfo] = useState("");
+    const [valid, setValid] = useState("valido");
 
     const {editar} = props;
   
