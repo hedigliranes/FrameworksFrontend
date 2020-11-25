@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import { Button, Modal, Form, Col } from 'react-bootstrap';
 import PropTypes from "prop-types";
+import Store from './Store';
+
 
 export function minLengthValidation(minLength, value) {
   if (value.trim().length < minLength) {
@@ -27,14 +29,22 @@ export default function Edicao(props) {
     const [nome, setNome] = useState(props.nome);
     const [info, setInfo] = useState(props.info);
     const [id, setID] = useState(props.id);
-    const [img, setImg] = useState('');
+    const [img, setImg] = useState(props.img);
     const [nameError, setNameError] = useState("");
     const [nameInfo, setNameInfo] = useState("");
     const [valid, setValid] = useState("valido");
 
-    const {editar} = props;
+    const {callbackFunctionEditar} = props;
   
     const handleClose = () => setShow(false); 
+
+    function sendData () {
+      callbackFunctionEditar();
+    }
+
+    const {
+      updateDog,
+    } = Store()
 
     function handleChange(event) {
         setNome(event.target.value)
@@ -47,9 +57,10 @@ export default function Edicao(props) {
     }
 
       const handleCadastrou = (event) =>{
-
-         editar(nome, info, id);
+         const dog = {"nome": nome, "info": info, "img": img}
+         updateDog(dog, id);
          setShow(false);
+         sendData();
 
         } 
       
@@ -121,5 +132,5 @@ export default function Edicao(props) {
     nome: PropTypes.string.isRequired,
     info: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
-    editar: PropTypes.func.isRequired,
+    callbackFunctionEditar: PropTypes.func.isRequired,
   };

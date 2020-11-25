@@ -4,76 +4,36 @@ import './App.css';
 import { Navbar, NavbarBrand, Button, Row, Col } from 'react-bootstrap';
 import Cards from './Cards'
 import SignUp from './SignUp'
+import Store from './Store'
 
-export default class App extends React.Component{
+export default function App(){
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      show: false,
-      load: false,
-      current: 0,
-      dogs: [
-        {"nome": "Bob", "info": "Cachorro amigavel !", "img": null},
-        {"nome": "Billy", "info": "Me adota pf", "img": null}
-      ],
+    const [show, setShow] = useState(false);
+    const [change, setChange] = useState(false);
+
+    let dogs = Store();
+
+    function showModal() {
+        setShow(!show);
+    };
+
+    function callbackFunction(){
+      setChange(!change);
     }
-  }
-  showModal = e => {
-    this.setState({
-      show: !this.state.show
-    });
-  };
 
-  callbackFunction = (childData) => {
-    const aux = this.state.dogs;
-    aux.splice(childData, 1);
-    this.setState({dogs: aux});
-  }
-
-  edicao = (nome, info, id) => {
-    let aux = this.state.dogs;
-    aux[id].nome = nome;
-    aux[id].info = info;
-    this.setState({dogs: aux});  
-  }
+  // edicao = (nome, info, id) => {
+  //   let aux = this.state.dogs;
+  //   aux[id].nome = nome;
+  //   aux[id].info = info;
+  //   this.setState({dogs: aux});  
+  // }
 
 
-  cadastro = (nome, info, img) => {
-    const aux = this.state.dogs;
-    aux.push({"nome": nome.value, "info": info.value, "img": img});
-    this.setState({dogs: aux});
-  }
-
-  componentWillMount() {
-    let aux = this.state.dogs;
-
-    aux.map((element) =>{
-        var xhr = new XMLHttpRequest();
-        var json_obj;
-        xhr.open("GET", "https://dog.ceo/api/breeds/image/random", true);
-        xhr.onload = function (e) {
-          if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-              json_obj = JSON.parse(xhr.responseText);
-              element.img = json_obj.message;
-              this.setState({dogs: aux});
-            } else {
-              console.error(xhr.statusText);
-            }
-          }
-        }.bind(this);
-        xhr.onerror = function (e) {
-          console.error(xhr.statusText);
-        };
-        xhr.send(null);
-    })     
-    this.setState({
-      load: !this.state.load
-    });
-  }
-
-  render(){
+  // cadastro = (nome, info, img) => {
+  //   const aux = this.state.dogs;
+  //   aux.push({"nome": nome.value, "info": info.value, "img": img});
+  //   this.setState({dogs: aux});
+  // }
   return (
     <div className="App">
 
@@ -94,35 +54,34 @@ export default class App extends React.Component{
           Plataforma dedica a fazer os doguinhos mais felizes !!!!
           <br></br>
           <Button variant="primary" onClick={e => {
-              this.showModal();
+              showModal();
          }}>Cadastre seu doginho</Button>
         </p>
       </header>
 
       <div>
         <Row>
-        {this.state.load == true ? 
-                this.state.dogs.map((element, index) =>
+        {dogs.dogs.length > 0 ? 
+                dogs.dogs.map((element, index) =>
                 <Col md="4" key={index}>
                   <Cards
                   id = {index}
                   nome = {element.nome}
                   info = {element.info}
-                  parentCallback = {this.callbackFunction}
-                  edicao = {this.edicao}
+                  parentCallback = {callbackFunction}
+                  //edicao = {this.edicao}
                   img = {element.img}
                   />
-                </Col>) : null}
+                </Col>) :
+                 null}
         </Row>
       </div>
 
-        { this.state.show == true ?
-          <SignUp show={this.state.show} cadastro={this.cadastro}/>
+        { show == true ?
+          <SignUp show={show} parentCallback = {callbackFunction}/>
           : null
           }
-
     </div>
   )
-}
 
 }

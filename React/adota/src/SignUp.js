@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { Button, Modal, Form, Col } from 'react-bootstrap';
 import PropTypes from "prop-types";
+import Store from './Store'
 
 export function minLengthValidation(minLength, value) {
   if (value.trim().length < minLength) {
@@ -31,7 +32,19 @@ export default function SignUp(props) {
     const [nameInfo, setNameInfo] = useState(" ");
     const [valid, setValid] = useState("invalido");
 
-    const {cadastro} = props;
+    const {parentCallback} = props;
+    
+
+
+  const {
+    createDog,
+  } = Store()
+
+
+  function sendData () {
+    parentCallback();
+  }
+
 
  useEffect(() => {
     var xhr = new XMLHttpRequest();
@@ -53,7 +66,10 @@ export default function SignUp(props) {
     xhr.send(null);
  }, [])
   
-    const handleClose = () => setShow(false); 
+    const handleClose = () =>{
+        setShow(false)
+        sendData();
+      }; 
 
     function handleChange(event) {
         setNome({value: event.target.value})
@@ -67,8 +83,8 @@ export default function SignUp(props) {
     }
 
       const handleCadastrou = (event) =>{
-
-         cadastro(nome, info, img);
+         createDog(nome, info, img);
+         sendData ()
          setShow(false);
 
         } 
@@ -101,7 +117,6 @@ export default function SignUp(props) {
                 if(nameError === "" && nameInfo === ""){
                   setValid("valido")
                 }
-            console.log(valid)
         }
         
     return (
@@ -139,5 +154,5 @@ export default function SignUp(props) {
 
   SignUp.propTypes = {
     show: PropTypes.bool.isRequired,
-    cadastro: PropTypes.func.isRequired,
+    parentCallback: PropTypes.func.isRequired,
   };

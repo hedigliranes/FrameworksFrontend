@@ -12,22 +12,38 @@ export default class Cards extends React.Component {
   };
   showModal = e => {
     this.setState({
-      show: !this.state.show
+      show: true
     });
   }
+
+  callbackFunction = () =>{
+    this.setState({
+      show: false
+    });
+    this.props.parentCallback();
+  }
+
+  callbackFunctionEditar = () =>{
+    this.setState({
+      showEdit: false
+    });
+    this.props.parentCallback();
+  
+  }
+
     showModalEditar = e => {
       this.setState({
-        showEdit: !this.state.showEdit
+        showEdit: true
       });
   };
 
-  sendData = (e) => {
-    this.props.parentCallback(e);
-  }
+  // sendData = (e) => {
+  //   this.props.parentCallback(e);
+  // }
 
-  editar = (nome, info, id) => {
-    this.props.edicao(nome, info, id);
-  }
+  // editar = (nome, info, id) => {
+  //   this.props.edicao(nome, info, id);
+  // }
     render() {
       return (
         <div>
@@ -53,7 +69,9 @@ export default class Cards extends React.Component {
           nome={this.props.nome}
           id={this.props.id}
           info={this.props.info}
-          adotou={this.sendData}/>
+          img = {this.props.img}
+          callbackFunction={this.callbackFunction}
+          />
           : null
           },
           { this.state.showEdit == true ?
@@ -61,7 +79,9 @@ export default class Cards extends React.Component {
           nome={this.props.nome}
           id={this.props.id}
           info={this.props.info}
-          editar={this.editar}/>
+          img = {this.props.img}
+          callbackFunctionEditar={this.callbackFunctionEditar}
+          />
           : null
           }
         </div>

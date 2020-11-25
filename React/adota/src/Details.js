@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import PropTypes from "prop-types";
-
+import Store from "./Store"
 
 export default function Details(props) {
 
@@ -10,13 +10,22 @@ export default function Details(props) {
     const [info, setInfo] = useState(props)
     const [id, setId] = useState(props);
 
-    const {adotou} = props;
+    const {callbackFunction} = props;
+
+    function sendData () {
+      callbackFunction();
+    }
+
+    const {
+      deleteDog
+    } = Store()
   
     const handleClose = () => setShow(false); 
 
     const handleAdotou = () =>{
-         adotou(id.id);
+         deleteDog(id.id);
          setShow(false);
+         sendData();
         } 
         
     return (
@@ -44,5 +53,5 @@ export default function Details(props) {
     nome: PropTypes.string.isRequired,
     info: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
-    adotou: PropTypes.func.isRequired,
+    callbackFunction: PropTypes.func.isRequired,
   };
