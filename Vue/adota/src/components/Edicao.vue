@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+//import axios from 'axios';
 
 const validate = {
   desc: (value) => minLengthValidation(3, value),
@@ -54,6 +54,10 @@ export function requiredValidation(value) {
   return null
 }
 
+import {
+  updateDog,
+} from './Store'
+
 export default {
   name: 'Edicao',
   props: ['dog', 'index'],
@@ -63,7 +67,7 @@ export default {
       current: 0,
       nome: this.dog.nome,
       desc: this.dog.info,
-      img: "",
+      img: this.dog.img,
       erros: 2,
       nameError: "",
       nameInfo: "",
@@ -76,7 +80,8 @@ export default {
         this.$refs['my-modal'].show()
       },
       editar: function() {
-        this.$emit("editar", this.nome, this.desc, this.index);
+        var dog = {"nome": this.nome, "info": this.desc, "img": this.img}
+        updateDog(dog, this.index);
       },
       checkField(name) {
         const value = this._data[name]
@@ -111,13 +116,13 @@ export default {
   mounted(){
       this.showModal();
 
-    axios.get(`https://dog.ceo/api/breeds/image/random`)
-    .then(response => {
-      this.img = response.data.message;
-    })
-    .catch(e => {
-      this.errors.push(e)
-    })
+    // axios.get(`https://dog.ceo/api/breeds/image/random`)
+    // .then(response => {
+    //   this.img = response.data.message;
+    // })
+    // .catch(e => {
+    //   this.errors.push(e)
+    // })
   }
 }
 </script>

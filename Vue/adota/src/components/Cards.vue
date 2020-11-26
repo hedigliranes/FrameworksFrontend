@@ -19,7 +19,7 @@
         </b-col>
       </b-row>
     <h1 v-if="show === true">
-        <Details :detalhes = "dog" @clique="adotando"/>  
+        <Details :detalhes = "dog" :index = "index" @clique="adotando"/>  
     </h1>
     <h1 v-if="showEdicao === true">
         <Edicao :dog = "dog" :index = "index" @editar="editar"/>  

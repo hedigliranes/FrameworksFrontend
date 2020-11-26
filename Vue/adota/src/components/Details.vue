@@ -9,9 +9,13 @@
 
 <script>
 
+import {
+  deleteDog,
+} from './Store'
+
 export default {
   name: 'Details',
-  props: ['detalhes'],
+  props: ['detalhes', 'index'],
 
   data: function() {
     return {
@@ -24,7 +28,7 @@ export default {
         this.$refs['my-modal'].show()
       },
       clique: function() {
-        this.$emit("clique");
+        deleteDog(this.index)
       }
     },
   mounted(){

@@ -109,7 +109,6 @@ export default {
               if(this.nameError == "" && this.nameInfo == ""){
                 this.valid = "valido";
               }
-          console.log(this.valid)
       }
     },
   mounted(){

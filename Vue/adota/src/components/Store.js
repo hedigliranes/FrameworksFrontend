@@ -1,17 +1,20 @@
+import Vue from 'vue'
 
-let Alldogs = ([])
+let Alldogs = []
 
-export const dogs = Alldogs
+export const dogs = (Alldogs)
 
 export function createDog (nome, info, img) {
   let dogsAux = Alldogs;
-  dogsAux.push({"nome": nome.value, "info": info.value, "img": img});
-  Alldogs = dogsAux;}
+  dogsAux.push({"nome": nome, "info": info, "img": img});
+  Alldogs = dogsAux;
+}
 
 export function updateDog(dog, index) {
-  let aux = Alldogs;
-  aux[index] = dog;
-  Alldogs = aux}
+  console.log(index);
+  Vue.set(Alldogs, index, dog)
+  console.log(Alldogs)
+}
 
 export function deleteDog(index) {
   const aux = Alldogs;

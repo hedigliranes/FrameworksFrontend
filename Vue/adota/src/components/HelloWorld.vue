@@ -18,13 +18,13 @@
       </header>
       <b-container>
       <b-row cols = 3>
-        <b-col v-for="(dog, index) of {dogs}" :key="index">
+        <b-col v-for="(dog, index) of Alldogs" :key="index">
         <Cards :dog = "dog" :index = "index" />
         </b-col>
       </b-row>
     </b-container>
     <h1 v-if="show === true">
-        <Cadastro @cadastrar="cadastrar"/>  
+        <Cadastro/>  
     </h1>
   </div>
 </template>
@@ -78,7 +78,7 @@ export default {
 
 mounted(){
 
-  console.log(dogs)
+  console.log(this.Alldogs)
 
   //  this.dogs.forEach((item) => {
   //   axios.get(`https://dog.ceo/api/breeds/image/random`)
