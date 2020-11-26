@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Store } from '../store';
 
 class Error {
   nome: string
@@ -17,6 +18,8 @@ export class EdicaoComponent implements OnInit {
   @Input() nome: String;
   @Input() index: String;
   @Input() desc: String;
+  @Input() url: String;
+
   modal: string;
   Examplemodal: string;
   ExamplemodalT: string;
@@ -25,7 +28,7 @@ export class EdicaoComponent implements OnInit {
   @Output() editar: EventEmitter<any> = new EventEmitter<any>();
 
 
-  constructor() { }
+  constructor(public store: Store) { }
 
   ngOnInit(): void {
     this.modal = "modalEdicao"+this.index;
@@ -33,7 +36,6 @@ export class EdicaoComponent implements OnInit {
     this.ExamplemodalT = "#ModalEdicao"+this.index;
     this.nomeBind = this.nome;
     this.descBind = this.desc;
-    console.log(this.index)
   }
 
   ngAfterViewInit(){
@@ -42,7 +44,9 @@ export class EdicaoComponent implements OnInit {
   }
   
   edicao(nome, desc){
-    this.editar.emit({nome:nome, desc:desc, index:this.index});
+    console.log(this.url)
+    var dog = {"nome": nome, "info": desc, "img": this.url}
+    this.store.updateDog(dog, this.index);
   }
 
 }

@@ -12,6 +12,6 @@
     </div>
 
     <div *ngIf="showEditar === true">
-      <app-edicao [nome] = "nome" [index] = "index" [desc]="desc" (editar)="edicao($event)"></app-edicao>
+      <app-edicao [nome] = "nome" [index] = "index" [desc]="desc" [url]="url" (editar)="edicao($event)"></app-edicao>
     </div>
 </div>

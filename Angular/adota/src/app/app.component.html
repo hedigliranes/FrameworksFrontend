@@ -41,8 +41,8 @@
 </header>
 
 <div class="row">
-  <div *ngFor="let dog of dogs; let i = index" class="col-sm-4">
-    <app-cards [nome]="dog.nome" [desc]="dog.info" [url]="dog.img" [index] = "i" (delete)="removerDog($event)" (edit)="editarDog($event)"></app-cards>
+  <div *ngFor="let dog of this.store.dogs; let i = index" class="col-sm-4">
+    <app-cards [nome]="dog.nome" [desc]="dog.info" [url]="dog.img" [index] = "i"></app-cards>
   </div>
 
   <div *ngIf="show === true">

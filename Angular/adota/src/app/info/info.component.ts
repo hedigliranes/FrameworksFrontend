@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Store } from '../store';
 
 @Component({
   selector: 'app-info',
@@ -16,7 +17,7 @@ export class InfoComponent implements OnInit {
   @Output() adotar: EventEmitter<any> = new EventEmitter<any>();
 
 
-  constructor() { }
+  constructor(public store: Store) { }
 
   ngOnInit(): void {
     this.modal = "modal"+this.index;
@@ -30,7 +31,7 @@ export class InfoComponent implements OnInit {
   }
   
   adocao(): void {
-    this.adotar.emit(this.index);
+    this.store.deleteDog(this.index);
   }
 
 }

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {ApiService } from '../api.service';
+import { Store } from '../store';
 
 class Error {
   nome: string
@@ -17,7 +18,7 @@ export class CadastroComponent implements OnInit {
   url: string;
   @Output() cadastrar: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService,public store: Store ) { }
 
 
 
@@ -33,7 +34,7 @@ export class CadastroComponent implements OnInit {
   }
 
   cadastro(nome, desc){
-    this.cadastrar.emit({nome:nome, desc:desc, url: this.url});
+   this.store.createDog(nome, desc, this.url);
   }
 
 }
