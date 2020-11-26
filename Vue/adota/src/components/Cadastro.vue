@@ -54,6 +54,11 @@ export function requiredValidation(value) {
   return null
 }
 
+import {
+  createDog,
+} from './Store'
+
+
 export default {
   name: 'Cadastro',
 
@@ -75,7 +80,7 @@ export default {
         this.$refs['my-modal'].show()
       },
       cadastrar: function() {
-        this.$emit("cadastrar", this.nome, this.desc, this.img);
+        createDog(this.nome, this.desc, this.img);
       },
       checkField(name) {
         const value = this._data[name]

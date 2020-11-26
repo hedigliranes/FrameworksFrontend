@@ -18,8 +18,8 @@
       </header>
       <b-container>
       <b-row cols = 3>
-        <b-col v-for="(dog, index) of dogs" :key="index">
-        <Cards :dog = "dog" :index = "index" @adotar="callbackFunction" @editar="editar"/>
+        <b-col v-for="(dog, index) of {dogs}" :key="index">
+        <Cards :dog = "dog" :index = "index" />
         </b-col>
       </b-row>
     </b-container>
@@ -31,9 +31,14 @@
 
 <script>
 
-import axios from 'axios';
+// import axios from 'axios';
 import Cards from './Cards';
 import Cadastro from './Cadastro';
+
+import {
+  dogs
+} from './Store'
+
 
 export default {
   name: 'HelloWorld',
@@ -41,51 +46,50 @@ export default {
   data: function() {
     return {
       current: 0,
-      dogs: [
-        {"nome": "Bob", "info": "Cachorro amigavel !", "img": null},
-        {"nome": "Billy", "info": "Me adota pf", "img": null}
-      ],
-      show: false
+      show: false,
+      Alldogs: dogs
     } 
   },
 
   methods: {
-      callbackFunction(childData){
-          console.log(this.dogs);
-          const aux = this.dogs;
-          aux.splice(childData, 1);
-          this.dogs = aux;
-      },
+      // callbackFunction(childData){
+      //     console.log(this.dogs);
+      //     const aux = this.dogs;
+      //     aux.splice(childData, 1);
+      //     this.dogs = aux;
+      // },
     showModal: function() {
       this.show = !this.show;
-    },
-    cadastrar(nome, info, img) {
-      console.log(nome)
-      const aux = this.dogs;
-      aux.push({"nome": nome, "info": info, "img": img});
-      this.dogs = aux;
-    },
-    editar(nome, info, id) {
-      console.log(nome)
-      const aux = this.dogs;
-      aux[id].nome = nome;
-      aux[id].info = info;
-      this.dogs = aux;
     }
+    // cadastrar(nome, info, img) {
+    //   console.log(nome)
+    //   const aux = this.dogs;
+    //   aux.push({"nome": nome, "info": info, "img": img});
+    //   this.dogs = aux;
+    // },
+    // editar(nome, info, id) {
+    //   console.log(nome)
+    //   const aux = this.dogs;
+    //   aux[id].nome = nome;
+    //   aux[id].info = info;
+    //   this.dogs = aux;
+    // }
   },
 
 mounted(){
 
-   this.dogs.forEach((item) => {
-    axios.get(`https://dog.ceo/api/breeds/image/random`)
-    .then(response => {
-      item.img = response.data.message;
-    })
-    .catch(e => {
-      this.errors.push(e)
-    })
+  console.log(dogs)
 
-    });
+  //  this.dogs.forEach((item) => {
+  //   axios.get(`https://dog.ceo/api/breeds/image/random`)
+  //   .then(response => {
+  //     item.img = response.data.message;
+  //   })
+  //   .catch(e => {
+  //     this.errors.push(e)
+  //   })
+
+  //   });
   
   }
 }
