@@ -9,6 +9,7 @@
                 required
                 placeholder="Nome do Doguinho"
                 @blur="checkField('nome')"
+                @input="checkField('nome')"
                 >
                 </b-form-input>
                 <br/>
@@ -18,6 +19,7 @@
             <b-form-textarea
                 id="textarea"
                 @blur="checkField('desc')"
+                @input="checkField('desc')"
                 v-model="desc"
                 placeholder="Fale Sobre Ele"
                 rows="6"
