@@ -12,12 +12,12 @@
           </button>
           <div class="form-group">
             <label for="exampleFormControlInput1">Nome</label>
-            <input bind:value={nome} type="input" on:blur={checkField('nome',nome)} class="form-control" id="exampleFormControlInput1" placeholder="Insira o nome">
+            <input bind:value={nome} type="input" on:input={checkField('nome',nome)}  on:blur={checkField('nome',nome)} class="form-control" id="exampleFormControlInput1" placeholder="Insira o nome">
             <div class="error" style="color:red">{ nameError }</div>
           </div>
           <div class="form-group">
             <label for="exampleFormControlTextarea1">Descrição</label>
-            <textarea on:blur={checkField('desc',desc)} bind:value={desc} class="form-control" id="exampleFormControlTextarea1" rows="5" placeholder="Fale sobre ele"></textarea>
+            <textarea on:blur={checkField('desc',desc)} on:input={checkField('desc',desc)}  bind:value={desc} class="form-control" id="exampleFormControlTextarea1" rows="5" placeholder="Fale sobre ele"></textarea>
           </div>
           <div class="error" style="color:red">{ nameInfo }</div>
         <div class="modal-footer">
@@ -32,6 +32,9 @@
 <script>
 import { onMount } from 'svelte';
 import { createEventDispatcher } from 'svelte'
+import { Store } from './Store.js'
+
+let functions = Store()
 
 const validate = {
   desc: (value) => minLengthValidation(3, value),
@@ -77,8 +80,7 @@ onMount(() => {
 });
 
 function cadastro(){
-    console.log(nome)
-    dispatcher('cadastrar', {nome: nome, desc: desc, img: img})
+    functions.create(nome, desc, img);
 }
 
 function checkField(name, valueCamp) {

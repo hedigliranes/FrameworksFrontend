@@ -27,6 +27,8 @@
 <script>
 import { onMount } from 'svelte';
 import { createEventDispatcher } from 'svelte'
+import { Store } from './Store.js'
+let functions = Store()
 
 export let nome
 export let desc
@@ -42,7 +44,7 @@ onMount(() => {
 });
 
 function adotar(){
-    dispatcher('adocao1', index)
+    functions.remove(index)
 }
 
 </script>

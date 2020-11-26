@@ -44,7 +44,6 @@ export class EdicaoComponent implements OnInit {
   }
   
   edicao(nome, desc){
-    console.log(this.url)
     var dog = {"nome": nome, "info": desc, "img": this.url}
     this.store.updateDog(dog, this.index);
   }

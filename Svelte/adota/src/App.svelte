@@ -2,52 +2,54 @@
 	import Card from './Card.svelte'
 	import Cadastro from './Cadastro.svelte'
 	import { onMount } from 'svelte';
+	import { dogs } from './Store.js'
 
-	let dogs = [
-        {"nome": "Bob", "info": "Cachorro amigavel !", "img": null},
-        {"nome": "Billy", "info": "Me adota pf", "img": null}
-	  ]
+ 	// let dogs = [
+    //     {"nome": "Bob", "info": "Cachorro amigavel !", "img": null},
+    //     {"nome": "Billy", "info": "Me adota pf", "img": null}
+	//   ]
 
 	let photos;
 	let show;
 
-	function cadastrar(event) {
-		console.log(event)
-      const aux = dogs;
-      aux.push({"nome": event.detail.nome, "info": event.detail.desc, "img": event.detail.img});
-      dogs = aux;
-    }
+	// function cadastrar(event) {
+	// 	console.log(event)
+    //   const aux = dogs;
+    //   aux.push({"nome": event.detail.nome, "info": event.detail.desc, "img": event.detail.img});
+    //   dogs = aux;
+    // }
 
 	function showModal(){
       show = !show;
  	}
 	
 	onMount(async () => {
-	  dogs.forEach(async (item) => {
-		const res = await fetch(`https://dog.ceo/api/breeds/image/random`);
-		photos = await res.json();
-		item.img = photos.message;
-		dogs = dogs
-		});
+	//   $dogs.forEach(async (item) => {
+	// 	const res = await fetch(`https://dog.ceo/api/breeds/image/random`);
+	// 	photos = await res.json();
+	// 	item.img = photos.message;
+	// 	dogs = dogs
+	// 	});
 	});
 
-	function removerDog(event){
-          const aux = dogs;
-          aux.splice(event.detail, 1);
-          dogs = aux;
-	}
+	// function removerDog(event){
+    //       const aux = dogs;
+    //       aux.splice(event.detail, 1);
+    //       dogs = aux;
+	// }
 
-	function editar(event){
-          const aux = dogs;
-		  aux[event.detail.id].nome = event.detail.nome; 
-		  aux[event.detail.id].info = event.detail.desc; 
-          dogs = aux;
-	}
+	// function editar(event){
+    //       const aux = dogs;
+	// 	  aux[event.detail.id].nome = event.detail.nome; 
+	// 	  aux[event.detail.id].info = event.detail.desc; 
+    //       dogs = aux;
+	// }
 
 </script>
 
 <main>
 	<nav class="navbar navbar-light bg-light">
+		<!-- svelte-ignore a11y-invalid-attribute -->
 		<a class="navbar-brand" href="#">
 		  <img src="/logo.png" width="250" height="150" alt="" loading="lazy">
 		</a>
@@ -60,15 +62,15 @@
 	</p>
 	</header>
 	<div class="row row-cols-3">
-		{#each dogs as dog, index}
+		{#each $dogs as dog, index}
 				<div class="col">
-					<Card nome={dog.nome} index={index} desc = {dog.info} img ={dog.img} on:adocao2={removerDog} on:editar={editar}/>
+					<Card nome={dog.nome} index={index} desc = {dog.info} img ={dog.img}/>
 				</div>
 		{/each}
 	</div>
 
 	{#if show === true}
-    <Cadastro on:cadastrar={cadastrar}></Cadastro>
+    	<Cadastro></Cadastro>
   {/if}
 
 </main>

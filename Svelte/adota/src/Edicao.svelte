@@ -12,12 +12,12 @@
           </button>
           <div class="form-group">
             <label for="exampleFormControlInput1">Nome</label>
-            <input bind:value={nome} type="input" on:blur={checkField('nome',nome)} class="form-control" id="exampleFormControlInput1" placeholder="Insira o nome">
+            <input bind:value={nome} type="input"  on:input={checkField('nome',nome)} on:blur={checkField('nome',nome)} class="form-control" id="exampleFormControlInput1" placeholder="Insira o nome">
             <div class="error" style="color:red">{ nameError }</div>
           </div>
           <div class="form-group">
             <label for="exampleFormControlTextarea1">Descrição</label>
-            <textarea on:blur={checkField('desc',desc)} bind:value={desc} class="form-control" id="exampleFormControlTextarea1" rows="5" placeholder="Fale sobre ele"></textarea>
+            <textarea on:blur={checkField('desc',desc)} on:input={checkField('desc',desc)} bind:value={desc} class="form-control" id="exampleFormControlTextarea1" rows="5" placeholder="Fale sobre ele"></textarea>
           </div>
           <div class="error" style="color:red">{ nameInfo }</div>
         <div class="modal-footer">
@@ -32,6 +32,9 @@
 <script>
 import { onMount } from 'svelte';
 import { createEventDispatcher } from 'svelte'
+import { Store } from './Store.js'
+
+let functions = Store()
 
 const validate = {
   desc: (value) => minLengthValidation(3, value),
@@ -53,6 +56,7 @@ export function requiredValidation(value) {
 }
 
 export let nome;
+export let img;
 export let desc;
 export let index;
 
@@ -63,18 +67,10 @@ let valid = "valido"
 
 let photos;
 
-let img;
-
  let modal = "modalEdicaomodal" + index;
  let Examplemodal = "Edicaomodal" + index;
  let ExamplemodalT = "#Edicaomodal" + index;
  const dispatcher = createEventDispatcher()
-
- onMount(async () => {
-		const res = await fetch(`https://dog.ceo/api/breeds/image/random`);
-		photos = await res.json();
-		img = photos.message;
-        });
 
 onMount(() => {
     document.getElementById(modal).style.display = "none";
@@ -82,7 +78,9 @@ onMount(() => {
 });
 
 function editar(){
-    dispatcher('editar', {nome: nome, desc: desc, id:index})
+    console.log(desc)
+    let dog = {nome: nome, info: desc, img: img};
+    functions.change(dog, index)
 }
 
 function checkField(name, valueCamp) {

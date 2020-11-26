@@ -1,9 +1,11 @@
   <div class="card" style="width: 18rem;">
     <img src={img} class="card-img-top" alt="...">
-    <div class="card-body">
+    <div class="card-body" style="text-align:center">
       <h5 class="card-title">{nome}</h5>
       <p class="card-text">{desc}</p>
+      <!-- svelte-ignore a11y-missing-attribute -->
       <a class="btn btn-primary" style="color:white !important" on:click={showModal}>Ver informações</a>
+      <!-- svelte-ignore a11y-missing-attribute -->
       <a class="btn btn-danger" style="color:white !important; margin-left: 15px" on:click={showModalEdicao}>Editar</a>
 
     </div>
@@ -15,7 +17,7 @@
 
   
   {#if showEdicao === true}
-    <Edicao nome = {nome} desc = {desc} index = {index} on:editar={editar}></Edicao>
+    <Edicao nome = {nome} desc = {desc} img = {img} index = {index} on:editar={editar}></Edicao>
   {/if}
 
 
@@ -31,6 +33,8 @@ export let index
 let show = false;
 let showEdicao = false;
 const dispatcher = createEventDispatcher()
+
+console.log(nome)
         
 function showModal(){
       show = !show;
