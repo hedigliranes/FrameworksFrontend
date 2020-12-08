@@ -4,7 +4,10 @@ import './App.css';
 import { Navbar, NavbarBrand, Button, Row, Col } from 'react-bootstrap';
 import Cards from './Cards'
 import SignUp from './SignUp'
+import SignUpRoute from './SignUpRoute'
 import Store from './Store'
+import { BrowserRouter, Switch, Route, Link } from 'react-router-dom'
+
 
 export default function App(){
 
@@ -50,13 +53,25 @@ export default function App(){
     </Navbar>
     <br />
       <header className="App-header">
-          <p >
-          Plataforma dedica a fazer os doguinhos mais felizes !!!!
-          <br></br>
-          <Button variant="primary" onClick={e => {
+      <p style={{width: "600px"}}>
+          <BrowserRouter>
+            <Switch>
+              <Route exact path="/">
+              Plataforma dedica a fazer os doguinhos mais felizes !!!!
+              <br></br>
+
+              <Button variant="primary" onClick={e => {}}>
+              <Link to="/Cadastro">Cadastre seu Doguinho !!!</Link></Button>
+              </Route>
+              <Route exact path="/Cadastro">
+              <SignUpRoute show={show} parentCallback = {callbackFunction}/>
+              </Route>
+            </Switch>
+      </BrowserRouter>
+          {/* <Button variant="primary" onClick={e => {
               showModal();
-         }}>Cadastre seu doginho</Button>
-        </p>
+         }}>Cadastre seu doginho</Button> */}
+      </p>
       </header>
 
       <div>
